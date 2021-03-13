@@ -14,8 +14,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image of cloud-image-utils
-      run: docker build -f cloud-image-utils/Dockerfile -t cloud-image-utils cloud-image-utils
-
-    - name: Build the Docker image of qemu-utils
-      run: docker build -f qemu-utils/Dockerfile -t qemu-utils qemu-utils
+    - name: Build the Docker images
+      run: ./build.sh
