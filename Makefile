@@ -1,9 +1,14 @@
 DOCKER_FILES := $(wildcard */Dockerfile)
-IMAGES := $(patsubst %/Dockerfile,%,$(DOCKER_FILES))
+BUILD_FILES := $(patsubst %/Dockerfile,%/.build,$(DOCKER_FILES))
 
 .PHONY: build
-build: $(IMAGES)
+build: $(BUILD_FILES)
 
-.PHONY: $(IMAGES)
-$(IMAGES):
-	docker build -t $@ $@
+$(BUILD_FILES): %/.build: %/Dockerfile
+	$(eval IMAGE := $(patsubst %/.build,%,$@))
+	docker build -t $(IMAGE) $(IMAGE)
+	touch $@
+
+.PHONY: clean
+clean:
+	rm $(BUILD_FILES)
