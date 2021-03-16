@@ -5,8 +5,7 @@ BUILD_FILES := $(patsubst %/Dockerfile,%/.build,$(DOCKER_FILES))
 build: $(BUILD_FILES)
 
 $(BUILD_FILES): %/.build: %/Dockerfile
-	$(eval IMAGE := $(patsubst %/.build,%,$@))
-	docker build -t $(IMAGE) $(IMAGE)
+	docker build -t $* $*
 	touch $@
 
 .PHONY: clean
