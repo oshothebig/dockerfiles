@@ -16,3 +16,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker images
       run: make build
+    - name: Push the Docker images
+      run: |
+        echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        docker tag debug ghcr.io/$GITHUB_ACTOR/debug
+        docker push ghcr.io/$GITHUB_ACTOR/debug
