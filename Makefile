@@ -7,7 +7,7 @@ PUSH_TARGETS := $(patsubst %/Dockerfile,%/.push,$(DOCKER_FILES))
 build: $(BUILD_FILES)
 
 $(BUILD_FILES): %/.build: %/Dockerfile
-	docker build -t $* $*
+	docker build -t $(REPOSITORY)/$* $*
 	touch $@
 
 .PHONY: clean
@@ -19,5 +19,4 @@ push: $(PUSH_TARGETS)
 
 .PHONY: $(PUSH_TARGETS)
 $(PUSH_TARGETS): %/.push: %/.build
-	docker tag $* $(REPOSITORY)/$*
 	docker push $(REPOSITORY)/$*
