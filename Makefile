@@ -1,22 +1,24 @@
 REPOSITORY ?= ghcr.io/oshothebig
-DOCKER_FILES := $(wildcard */Dockerfile)
-BUILD_FILES := $(patsubst %/Dockerfile,%/.build,$(DOCKER_FILES))
-PUSH_TARGETS := $(patsubst %/Dockerfile,%/.push,$(DOCKER_FILES))
+IMAGES := $(patsubst %/Dockerfile,%,$(wildcard */Dockerfile))
 
 .PHONY: build
-build: $(BUILD_FILES)
+build: $(addprefix build-,$(IMAGES))
 
-$(BUILD_FILES): %/.build: %/Dockerfile
+.PHONY: build-%
+build-%: %/.build ;
+
+.PRECIOUS: %/.build
+%/.build: %/Dockerfile
 	docker build -t $(REPOSITORY)/$* $*
 	touch $@
 
 .PHONY: clean
 clean:
-	rm $(BUILD_FILES)
+	rm -f $(addsuffix /.build,$(IMAGES))
 
 .PHONY: push
-push: $(PUSH_TARGETS)
+push: $(addprefix push-,$(IMAGES))
 
-.PHONY: $(PUSH_TARGETS)
-$(PUSH_TARGETS): %/.push: %/.build
+.PHONY: push-%
+push-%: build-%
 	docker push $(REPOSITORY)/$*
