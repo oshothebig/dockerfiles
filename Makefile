@@ -12,13 +12,13 @@ build-%: %/.build ;
 	docker build -t $(REPOSITORY)/$* $*
 	touch $@
 
-.PHONY: clean
-clean:
-	rm -f $(addsuffix /.build,$(IMAGES))
-
 .PHONY: push
 push: $(addprefix push-,$(IMAGES))
 
 .PHONY: push-%
 push-%: build-%
 	docker push $(REPOSITORY)/$*
+
+.PHONY: clean
+clean:
+	rm -f */.build
