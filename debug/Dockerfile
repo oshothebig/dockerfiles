@@ -5,7 +5,6 @@ RUN apt-get update && \
         iproute2 \
         iputils-ping \
         traceroute \
-        net-tools \
         dnsutils \
         iptables \
         netcat \
