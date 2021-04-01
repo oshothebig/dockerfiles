@@ -2,12 +2,8 @@ REPOSITORY ?= ghcr.io/oshothebig
 IMAGES := $(patsubst %/Dockerfile,%,$(wildcard */Dockerfile))
 
 .PHONY: build
-build: $(addprefix build-,$(IMAGES))
+build: $(addsuffix /.build,$(IMAGES))
 
-.PHONY: build-%
-build-%: %/.build ;
-
-.PRECIOUS: %/.build
 %/.build: %/Dockerfile
 	docker build -t $(REPOSITORY)/$* $*
 	touch $@
