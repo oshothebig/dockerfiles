@@ -16,6 +16,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set up qemu-user-static for arm64 binary execution
       run: docker run --rm --privileged multiarch/qemu-user-static:5.2.0-2 --reset -p yes
+    - name: Set up multi-arch supported Docker builder
+      run: docker buildx create --use --name multi-arch
     - name: Build the Docker images
       run: make build
     - name: Login to GitHub Container Registry
