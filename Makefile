@@ -1,5 +1,6 @@
 REPOSITORY ?= ghcr.io/oshothebig
 IMAGES := $(patsubst %/Dockerfile,%,$(wildcard */Dockerfile))
+PUSH_TARGETS := $(addprefix push-,$(IMAGES))
 
 .PHONY: build
 build: $(addsuffix /.build,$(IMAGES))
@@ -9,10 +10,10 @@ build: $(addsuffix /.build,$(IMAGES))
 	touch $@
 
 .PHONY: push
-push: $(addprefix push-,$(IMAGES))
+push: $(PUSH_TARGETS)
 
-.PHONY: push-%
-push-%: %/.build
+.PHONY: $(PUSH_TARGETS)
+$(PUSH_TARGETS): push-%: %/.build
 	docker push $(REPOSITORY)/$*
 
 .PHONY: clean
