@@ -18,5 +18,5 @@ jobs:
       run: make build
     - name: Push the Docker images
       run: |
-        echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
         make push
