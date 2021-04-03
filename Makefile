@@ -12,7 +12,7 @@ build: $(addsuffix /.build,$(IMAGES))
 push: $(addprefix push-,$(IMAGES))
 
 .PHONY: push-%
-push-%: build-%
+push-%: %/.build
 	docker push $(REPOSITORY)/$*
 
 .PHONY: clean
