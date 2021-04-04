@@ -12,5 +12,6 @@ RUN apt-get update && \
         nmap \
         tcpdump \
         iperf \
+        strace \
         less \
         vim \
