@@ -16,6 +16,13 @@ push: $(PUSH_TARGETS)
 $(PUSH_TARGETS): push-%: %/.build
 	docker push $(REPOSITORY)/$*
 
+.PHONY: multi-arch-build
+multi-arch-build: $(IMAGES)
+
+.PHONY: $(IMAGES)
+$(IMAGES): %:
+	docker buildx build -t $(REPOSITORY)/$@ --platform linux/amd64,linux/arm64 --push $@
+
 .PHONY: clean
 clean:
 	rm -f */.build
